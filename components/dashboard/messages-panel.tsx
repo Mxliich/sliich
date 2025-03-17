@@ -30,7 +30,9 @@ export function MessagesPanel({ user }: MessagesPanelProps) {
   const [activeTab, setActiveTab] = useState("all")
 
   useEffect(() => {
-    if (!user) return
+    if (!user) {
+      return null;
+    }
 
     async function fetchMessages() {
       setLoading(true)
