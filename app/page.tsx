@@ -1,9 +1,9 @@
-import { HeroSection } from "@/components/landing/hero-section"
-import { FeaturesSection } from "@/components/landing/features-section"
-import { TestimonialsSection } from "@/components/landing/testimonials-section"
-import { PricingSection } from "@/components/landing/pricing-section"
-import { FooterSection } from "@/components/landing/footer-section"
-import { LandingHeader } from "@/components/landing/landing-header"
+import { HeroSection } from "sliich/components/landing/hero-section"
+import { FeaturesSection } from "sliich/components/landing/features-section"
+import { TestimonialsSection } from "sliich/components/landing/testimonials-section"
+import { PricingSection } from "sliich/components/landing/pricing-section"
+import { FooterSection } from "sliich/components/landing/footer-section"
+import { LandingHeader } from "sliich/components/landing/landing-header"
 
 export default function Home() {
   return (
