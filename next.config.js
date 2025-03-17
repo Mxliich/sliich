@@ -2,7 +2,7 @@
 const nextConfig = {
   output: 'standalone',
   images: {
-    domains: ['your-domain.com'], // أضف النطاقات التي تستخدمها
+    domains: ['sliich.vercel.app'], // أضف النطاقات التي تستخدمها
   },
 }
 
