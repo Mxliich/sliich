@@ -82,6 +82,9 @@ body {
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+  h1 {
+    @apply text-4xl font-bold mb-6;
+  }
 }
 
 @layer base {
