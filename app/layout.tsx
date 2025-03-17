@@ -2,9 +2,9 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
-import { SupabaseProvider } from "@/lib/supabase-provider"
+import { ThemeProvider } from "sliich/components/theme-provider"
+import { Toaster } from "sliich/components/ui/toaster"
+import { SupabaseProvider } from "sliich/lib/supabase-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
