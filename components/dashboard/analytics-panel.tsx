@@ -36,7 +36,7 @@ export function AnalyticsPanel({ user }: AnalyticsPanelProps) {
         const { count: totalMessages, error: messagesError } = await supabase
           .from("messages")
           .select("*", { count: "exact", head: true })
-          .eq("recipient_id", user.id)
+          .eq("recipient_id", user?.id ?? '')
 
         if (messagesError) throw messagesError
 
@@ -44,12 +44,12 @@ export function AnalyticsPanel({ user }: AnalyticsPanelProps) {
         const { count: totalPolls, error: pollsError } = await supabase
           .from("polls")
           .select("*", { count: "exact", head: true })
-          .eq("user_id", user.id)
+          .eq("user_id", user?.id ?? '')
 
         if (pollsError) throw pollsError
 
         // Get total poll responses
-        const { data: polls, error: pollsDataError } = await supabase.from("polls").select("id").eq("user_id", user.id)
+        const { data: polls, error: pollsDataError } = await supabase.from("polls").select("id").eq("user_id", user?.id ?? '')
 
         if (pollsDataError) throw pollsDataError
 
@@ -77,7 +77,7 @@ export function AnalyticsPanel({ user }: AnalyticsPanelProps) {
         const { count: messagesThisWeek, error: thisWeekError } = await supabase
           .from("messages")
           .select("*", { count: "exact", head: true })
-          .eq("recipient_id", user.id)
+          .eq("recipient_id", user?.id ?? '')
           .gte("created_at", startOfWeek.toISOString())
 
         if (thisWeekError) throw thisWeekError
@@ -92,7 +92,7 @@ export function AnalyticsPanel({ user }: AnalyticsPanelProps) {
         const { count: messagesLastWeek, error: lastWeekError } = await supabase
           .from("messages")
           .select("*", { count: "exact", head: true })
-          .eq("recipient_id", user.id)
+          .eq("recipient_id", user?.id ?? '')
           .gte("created_at", startOfLastWeek.toISOString())
           .lte("created_at", endOfLastWeek.toISOString())
 
@@ -104,7 +104,7 @@ export function AnalyticsPanel({ user }: AnalyticsPanelProps) {
         const { data: dailyMessages, error: dailyError } = await supabase
           .from("messages")
           .select("created_at")
-          .eq("recipient_id", user.id)
+          .eq("recipient_id", user?.id ?? '')
           .gte("created_at", startOfLastWeek.toISOString())
 
         if (dailyError) throw dailyError
