@@ -23,6 +23,9 @@ const nextConfig = {
     parallelServerCompiles: true,
     serverActions: true,
   },
+  output: 'export',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/sliich/' : '',
+  basePath: process.env.NODE_ENV === 'production' ? '/sliich' : '',
 }
 
 mergeConfig(nextConfig, userConfig)
