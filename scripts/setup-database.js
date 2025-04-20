@@ -2,7 +2,7 @@ const { Pool } = require('pg');
 
 // Initialize PostgreSQL client
 const pool = new Pool({
-  connectionString: 'postgresql://postgres:[YOUR-PASSWORD]@db.jrkzebosziywyfolevmu.supabase.co:5432/postgres'
+  connectionString: 'postgresql://postgres:gy8HBghEIibEiufs@db.jrkzebosziywyfolevmu.supabase.co:5432/postgres'
 });
 
 async function setupDatabase() {
