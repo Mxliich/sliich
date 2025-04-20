@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "setup-db": "node scripts/setup-database.js"
+    "setup-db": "node scripts/setup-database.js",
+    "postinstall": "npm run setup-db"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
