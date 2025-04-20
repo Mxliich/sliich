@@ -30,30 +30,34 @@ export function MessagesPanel({ user }: MessagesPanelProps) {
   const [activeTab, setActiveTab] = useState("all")
 
   useEffect(() => {
-    if (!user) {
-      return null;
+  if (!user) {
+    return; // Exit early, implicitly returns undefined
+  }
+
+  async function fetchMessages() {
+    setLoading(true);
+
+    const { data, error } = await supabase
+      .from("messages")
+      .select("*")
+      .eq("recipient_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      toast({
+        title: "Error fetching messages",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
     }
 
-    async function fetchMessages() {
-      setLoading(true)
+    setMessages(data || []);
+    setLoading(false);
+  }
 
-      const { data, error } = await supabase
-        .from("messages")
-        .select("*")
-        .eq("recipient_id", user.id)
-        .order("created_at", { ascending: false })
-
-      if (error) {
-        toast({
-          title: "Error fetching messages",
-          description: error.message,
-          variant: "destructive",
-        })
-        return
-      }
-
-      setMessages(data || [])
-      setLoading(false)
+  fetchMessages();
+}, [user, supabase, toast]); // Include all dependencies
 
       // Mark unread messages as read
       const unreadMessages = data?.filter((msg) => !msg.is_read).map((msg) => msg.id) || []
