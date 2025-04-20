@@ -32,17 +32,22 @@ export function MessagesPanel({ user }: MessagesPanelProps) {
 
   useEffect(() => {
     if (!user) {
-      setLoading(false) // Ensure loading state is reset if no user
+      setLoading(false) // Reset loading state if no user
       return // Exit early
     }
 
     async function fetchMessages() {
+      if (!user) {
+        setLoading(false)
+        return // Exit early if user is null (redundant but explicit for TypeScript)
+      }
+
       setLoading(true)
 
       const { data, error } = await supabase
         .from("messages")
         .select("*")
-        .eq("recipient_id", user.id)
+        .eq("recipient_id", user.id) // TypeScript now knows user is not null
         .order("created_at", { ascending: false })
 
       if (error) {
