@@ -20,6 +20,7 @@ interface Message {
   created_at: string
   is_read: boolean
   is_answered: boolean
+  recipient_id?: string // Optional, based on schema
 }
 
 export function MessagesPanel({ user }: MessagesPanelProps) {
@@ -30,40 +31,49 @@ export function MessagesPanel({ user }: MessagesPanelProps) {
   const [activeTab, setActiveTab] = useState("all")
 
   useEffect(() => {
-  if (!user) {
-    return; // Exit early, implicitly returns undefined
-  }
-
-  async function fetchMessages() {
-    setLoading(true);
-
-    const { data, error } = await supabase
-      .from("messages")
-      .select("*")
-      .eq("recipient_id", user.id)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      toast({
-        title: "Error fetching messages",
-        description: error.message,
-        variant: "destructive",
-      });
-      return;
+    if (!user) {
+      setLoading(false) // Ensure loading state is reset if no user
+      return // Exit early
     }
 
-    setMessages(data || []);
-    setLoading(false);
-  }
+    async function fetchMessages() {
+      setLoading(true)
 
-  fetchMessages();
-}, [user, supabase, toast]); // Include all dependencies
+      const { data, error } = await supabase
+        .from("messages")
+        .select("*")
+        .eq("recipient_id", user.id)
+        .order("created_at", { ascending: false })
+
+      if (error) {
+        toast({
+          title: "Error fetching messages",
+          description: error.message,
+          variant: "destructive",
+        })
+        setLoading(false)
+        return
+      }
 
       // Mark unread messages as read
-      const unreadMessages = data?.filter((msg) => !msg.is_read).map((msg) => msg.id) || []
+      const unreadMessages = data?.filter((msg: Message) => !msg.is_read).map((msg: Message) => msg.id) || []
       if (unreadMessages.length > 0) {
-        await supabase.from("messages").update({ is_read: true }).in("id", unreadMessages)
+        const { error: updateError } = await supabase
+          .from("messages")
+          .update({ is_read: true })
+          .in("id", unreadMessages)
+
+        if (updateError) {
+          toast({
+            title: "Error updating messages",
+            description: updateError.message,
+            variant: "destructive",
+          })
+        }
       }
+
+      setMessages(data || [])
+      setLoading(false)
     }
 
     fetchMessages()
@@ -81,7 +91,7 @@ export function MessagesPanel({ user }: MessagesPanelProps) {
         },
         (payload) => {
           setMessages((prev) => [payload.new as Message, ...prev])
-        },
+        }
       )
       .subscribe()
 
@@ -213,4 +223,3 @@ export function MessagesPanel({ user }: MessagesPanelProps) {
     </div>
   )
 }
-
